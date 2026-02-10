@@ -1,1 +1,301 @@
-(function(){function enablePaste(){document.addEventListener('paste',e=>e.stopImmediatePropagation(),true);document.addEventListener('copy',e=>e.stopImmediatePropagation(),true);document.addEventListener('cut',e=>e.stopImmediatePropagation(),true);['onpaste','oncopy','oncut'].forEach(e=>{document[e]=null;document.body[e]=null});const e=document.querySelectorAll('input, textarea');e.forEach(e=>{['onpaste','oncopy','oncut'].forEach(t=>{e[t]=null});e.setAttribute('onpaste','');e.setAttribute('oncopy','');e.setAttribute('oncut','');e.style.webkitUserSelect='text';e.style.userSelect='text'});}enablePaste();let cachedProfile=null;async function loadProfile(){return new Promise((e=>{chrome.storage.local.get('resumeProfile',(t=>{cachedProfile=t.resumeProfile||null,e(cachedProfile)}))}))}function levenshtein(e,t){const r=e.length,n=t.length;if(0===r)return n;if(0===n)return r;const a=[];for(let e=0;e<=n;e++)a[e]=[e];for(let e=0;e<=r;e++)a[0][e]=e;for(let o=1;o<=n;o++)for(let n=1;n<=r;n++)t.charAt(o-1)===e.charAt(n-1)?a[o][n]=a[o-1][n-1]:a[o][n]=Math.min(a[o-1][n-1]+1,Math.min(a[o][n-1]+1,a[o-1][n]+1));return a[n][r]}function fuzzyMatch(e,t,r=0.7){const n=e.toLowerCase(),a=t.toLowerCase();if(n.includes(a)||a.includes(n))return!0;const o=levenshtein(n,a),i=Math.max(n.length,a.length);return 1-o/i>=r}const FIELD_PATTERNS={firstName:['first name','firstname','fname','given name','forename','first','preferred first','legal first'],middleName:['middle name','middlename','mname','middle initial'],lastName:['last name','lastname','lname','surname','family name','last','legal last'],fullName:['full name','fullname','name','your name','candidate name','full legal name','complete name'],email:['email','e-mail','mail','email address','electronic mail','contact email'],phone:['phone','telephone','mobile','cell','contact number','phone number','mobile number','tel','primary phone'],alternatePhone:['alternate phone','secondary phone','other phone','additional phone','home phone'],address:['address','street address','street','address line 1','address line 2','mailing address','home address'],city:['city','town','municipality'],state:['state','province','region','county'],country:['country','nation','nationality of residence'],zipCode:['zip','postal code','pin code','postcode','zip code','postal'],linkedin:['linkedin','linked in','linkedin url','linkedin profile'],github:['github','github url','github profile','git hub'],portfolio:['portfolio','website','personal website','personal site','web portfolio','your website'],currentCompany:['current company','current employer','present company','current organization','employer'],currentTitle:['current title','current position','current job title','current role','present position','job title'],totalExperience:['total experience','years of experience','experience','work experience','professional experience','total years'],currentSalary:['current salary','current ctc','present salary','current compensation','salary'],expectedSalary:['expected salary','desired salary','expected ctc','salary expectation','target salary'],noticePeriod:['notice period','availability','joining time','notice','when can you join','earliest start date'],education:['education','highest education','degree','qualification','education level'],university:['university','college','school','institution','alma mater','educational institution'],graduationYear:['graduation year','year of graduation','graduation date','completion year','grad year'],skills:['skills','technical skills','core skills','key skills','expertise','competencies','technologies'],summary:['summary','about','bio','profile','professional summary','career summary','overview','about you'],coverLetter:['cover letter','letter','why are you interested','why this role','motivation','additional information'],referralSource:['how did you hear','referral source','source','where did you find','how did you find'],gender:['gender','sex'],nationality:['nationality','citizenship','citizen of'],workAuthorization:['work authorization','work permit','visa status','right to work','employment authorization'],remoteWork:['remote','work from home','remote work','willing to work remotely','open to remote'],relocation:['relocation','willing to relocate','open to relocation','can you relocate'],veteran:['veteran','military','veteran status','military service'],disability:['disability','disability status','handicap','differently abled']};function matchesField(e,t){const r=e.toLowerCase();for(const[e,n]of Object.entries(t))for(const t of n)if(r.includes(t)||fuzzyMatch(r,t,0.75))return e;return null}function triggerEvent(e,t='input'){const r=Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,'value')||Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value');if(r&&r.set){const t=e.value;r.set.call(e,t)}['input','change','blur','keyup','keydown'].forEach((t=>{const r=new Event(t,{bubbles:!0,cancelable:!0});e.dispatchEvent(r)}));const n=new Event('input',{bubbles:!0,inputType:'insertText',data:e.value});e.dispatchEvent(n);}async function fillField(e,t){if(!t)return!1;if('checkbox'===e.type||'radio'===e.type)return e.checked=!!t,triggerEvent(e,'change'),!0;if('SELECT'===e.tagName){const r=Array.from(e.options).find((e=>e.value.toLowerCase()===String(t).toLowerCase()||e.text.toLowerCase()===String(t).toLowerCase()));return!!r&&(e.value=r.value,triggerEvent(e,'change'),!0)}if('file'===e.type)return!1;const r=Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,'value')||Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype,'value');return r&&r.set&&r.set.call(e,String(t)),e.value=String(t),triggerEvent(e),!0}async function autoFillForm(){const e=await loadProfile();if(!e)return void console.log('No profile data found');enablePaste();let t=0;const r=document.querySelectorAll('input:not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="image"]), textarea, select');for(const n of r){const r=(n.placeholder||n.name||n.id||n.getAttribute('aria-label')||n.getAttribute('data-automation-id')||'').trim(),a=matchesField(r,FIELD_PATTERNS);if(a&&e[a]){if(await fillField(n,e[a])){t++;const r={};r[a]=e[a],chrome.storage.local.set({filledFields:r})}}}console.log(`Auto-filled ${t} fields with fuzzy matching`);}chrome.runtime.onMessage.addListener(((e,t,r)=>{'FILL_FORM'===e.action&&autoFillForm().then((()=>r({success:!0}))).catch((e=>{console.error('Error filling form:',e),r({success:!1,error:e.message})}));return!0}));})();
+// content.js - Resume Auto Fill v1.4.1
+// This script runs on every page and fills forms when requested
+
+(function() {
+  'use strict';
+
+  // Enable paste on all fields
+  function enablePaste() {
+    console.log('Resume Auto Fill: Enabling paste functionality');
+    
+    // Remove paste blockers
+    document.addEventListener('paste', (e) => e.stopImmediatePropagation(), true);
+    document.addEventListener('copy', (e) => e.stopImmediatePropagation(), true);
+    document.addEventListener('cut', (e) => e.stopImmediatePropagation(), true);
+    
+    // Remove inline handlers
+    ['onpaste', 'oncopy', 'oncut'].forEach(prop => {
+      document[prop] = null;
+      if (document.body) document.body[prop] = null;
+    });
+    
+    // Enable on all inputs
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+      ['onpaste', 'oncopy', 'oncut'].forEach(prop => {
+        input[prop] = null;
+      });
+      input.removeAttribute('onpaste');
+      input.removeAttribute('oncopy');
+      input.removeAttribute('oncut');
+      input.style.webkitUserSelect = 'text';
+      input.style.userSelect = 'text';
+    });
+  }
+
+  // Run on page load
+  enablePaste();
+  
+  // Run again after a delay for dynamic content
+  setTimeout(enablePaste, 1000);
+
+  let cachedProfile = null;
+
+  // Load profile from storage
+  async function loadProfile() {
+    return new Promise((resolve) => {
+      chrome.storage.local.get('resumeProfile', (result) => {
+        cachedProfile = result.resumeProfile || null;
+        console.log('Resume Auto Fill: Profile loaded', cachedProfile);
+        resolve(cachedProfile);
+      });
+    });
+  }
+
+  // Levenshtein distance for fuzzy matching
+  function levenshtein(a, b) {
+    const an = a.length;
+    const bn = b.length;
+    if (an === 0) return bn;
+    if (bn === 0) return an;
+
+    const matrix = [];
+    for (let i = 0; i <= bn; i++) {
+      matrix[i] = [i];
+    }
+    for (let j = 0; j <= an; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= bn; i++) {
+      for (let j = 1; j <= an; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+          );
+        }
+      }
+    }
+    return matrix[bn][an];
+  }
+
+  // Fuzzy match with threshold
+  function fuzzyMatch(str1, str2, threshold = 0.7) {
+    const s1 = str1.toLowerCase();
+    const s2 = str2.toLowerCase();
+    
+    if (s1.includes(s2) || s2.includes(s1)) return true;
+    
+    const distance = levenshtein(s1, s2);
+    const maxLen = Math.max(s1.length, s2.length);
+    const similarity = 1 - (distance / maxLen);
+    
+    return similarity >= threshold;
+  }
+
+  // Field patterns for matching
+  const FIELD_PATTERNS = {
+    firstName: ['first name', 'firstname', 'fname', 'given name', 'forename', 'first'],
+    middleName: ['middle name', 'middlename', 'mname', 'middle initial'],
+    lastName: ['last name', 'lastname', 'lname', 'surname', 'family name', 'last'],
+    fullName: ['full name', 'fullname', 'name', 'your name', 'candidate name', 'complete name'],
+    email: ['email', 'e-mail', 'mail', 'email address', 'contact email'],
+    phone: ['phone', 'telephone', 'mobile', 'cell', 'contact number', 'phone number'],
+    alternatePhone: ['alternate phone', 'secondary phone', 'other phone', 'home phone'],
+    address: ['address', 'street address', 'street', 'address line'],
+    city: ['city', 'town'],
+    state: ['state', 'province', 'region'],
+    country: ['country', 'nation'],
+    zipCode: ['zip', 'postal code', 'pin code', 'postcode', 'zip code'],
+    linkedin: ['linkedin', 'linked in'],
+    github: ['github', 'git hub'],
+    portfolio: ['portfolio', 'website', 'personal website'],
+    currentCompany: ['current company', 'employer', 'organization'],
+    currentTitle: ['current title', 'position', 'job title', 'role'],
+    totalExperience: ['total experience', 'years of experience', 'experience'],
+    currentSalary: ['current salary', 'current ctc', 'salary'],
+    expectedSalary: ['expected salary', 'desired salary', 'expected ctc'],
+    noticePeriod: ['notice period', 'availability', 'joining time'],
+    education: ['education', 'degree', 'qualification'],
+    university: ['university', 'college', 'school'],
+    graduationYear: ['graduation year', 'year of graduation'],
+    skills: ['skills', 'technical skills', 'expertise'],
+    summary: ['summary', 'about', 'bio', 'profile'],
+    coverLetter: ['cover letter', 'letter'],
+    referralSource: ['how did you hear', 'referral source', 'source'],
+    gender: ['gender', 'sex'],
+    nationality: ['nationality', 'citizenship'],
+    workAuthorization: ['work authorization', 'work permit', 'visa status']
+  };
+
+  // Match field to profile key
+  function matchesField(fieldText, patterns) {
+    const text = fieldText.toLowerCase().trim();
+    
+    for (const [key, keywords] of Object.entries(patterns)) {
+      for (const keyword of keywords) {
+        if (text.includes(keyword) || fuzzyMatch(text, keyword, 0.75)) {
+          return key;
+        }
+      }
+    }
+    return null;
+  }
+
+  // Trigger events for React/Vue/Angular
+  function triggerEvents(element) {
+    const events = ['input', 'change', 'blur', 'keyup', 'keydown'];
+    
+    events.forEach(eventType => {
+      const event = new Event(eventType, {
+        bubbles: true,
+        cancelable: true
+      });
+      element.dispatchEvent(event);
+    });
+
+    // Special handling for React
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      'value'
+    );
+    const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLTextAreaElement.prototype,
+      'value'
+    );
+
+    if (element.tagName === 'INPUT' && nativeInputValueSetter) {
+      nativeInputValueSetter.set.call(element, element.value);
+    } else if (element.tagName === 'TEXTAREA' && nativeTextAreaValueSetter) {
+      nativeTextAreaValueSetter.set.call(element, element.value);
+    }
+
+    const inputEvent = new Event('input', {
+      bubbles: true,
+      inputType: 'insertText',
+      data: element.value
+    });
+    element.dispatchEvent(inputEvent);
+  }
+
+  // Fill a single field
+  async function fillField(element, value) {
+    if (!value || value === '') return false;
+
+    try {
+      // Handle checkbox/radio
+      if (element.type === 'checkbox' || element.type === 'radio') {
+        element.checked = value === true || value === 'true';
+        triggerEvents(element);
+        return true;
+      }
+
+      // Handle select
+      if (element.tagName === 'SELECT') {
+        const option = Array.from(element.options).find(
+          opt => opt.value.toLowerCase() === String(value).toLowerCase() ||
+                 opt.text.toLowerCase() === String(value).toLowerCase()
+        );
+        if (option) {
+          element.value = option.value;
+          triggerEvents(element);
+          return true;
+        }
+        return false;
+      }
+
+      // Handle file input (skip)
+      if (element.type === 'file') {
+        return false;
+      }
+
+      // Handle regular inputs
+      const descriptor = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+      ) || Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        'value'
+      );
+
+      if (descriptor && descriptor.set) {
+        descriptor.set.call(element, String(value));
+      }
+
+      element.value = String(value);
+      triggerEvents(element);
+      
+      return true;
+    } catch (error) {
+      console.error('Error filling field:', error);
+      return false;
+    }
+  }
+
+  // Main autofill function
+  async function autoFillForm() {
+    console.log('Resume Auto Fill: Starting autofill...');
+    
+    const profile = await loadProfile();
+    if (!profile) {
+      console.log('Resume Auto Fill: No profile data found');
+      alert('No profile data found. Please fill in your details in the extension popup first.');
+      return;
+    }
+
+    // Enable paste again
+    enablePaste();
+
+    let filled = 0;
+    const selector = 'input:not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="image"]), textarea, select';
+    const fields = document.querySelectorAll(selector);
+
+    console.log(`Resume Auto Fill: Found ${fields.length} fields`);
+
+    for (const field of fields) {
+      // Get field identifier
+      const fieldText = (
+        field.placeholder ||
+        field.name ||
+        field.id ||
+        field.getAttribute('aria-label') ||
+        field.getAttribute('data-automation-id') ||
+        field.getAttribute('label') ||
+        ''
+      ).trim();
+
+      if (!fieldText) continue;
+
+      const matchedKey = matchesField(fieldText, FIELD_PATTERNS);
+      if (matchedKey && profile[matchedKey]) {
+        const success = await fillField(field, profile[matchedKey]);
+        if (success) {
+          filled++;
+          console.log(`Resume Auto Fill: Filled ${matchedKey} in field "${fieldText}"`);
+        }
+      }
+    }
+
+    console.log(`Resume Auto Fill: Completed - filled ${filled} fields`);
+    alert(`Auto-filled ${filled} fields successfully!`);
+  }
+
+  // Listen for messages from popup
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'FILL_FORM') {
+      console.log('Resume Auto Fill: Received fill form request');
+      autoFillForm()
+        .then(() => sendResponse({ success: true }))
+        .catch(error => {
+          console.error('Resume Auto Fill: Error', error);
+          sendResponse({ success: false, error: error.message });
+        });
+      return true; // Keep channel open for async response
+    }
+  });
+
+  console.log('Resume Auto Fill: Content script loaded');
+})();
