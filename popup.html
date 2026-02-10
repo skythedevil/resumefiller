@@ -1,197 +1,82 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Resume Auto Fill</title>
-    <link rel="stylesheet" href="popup.css" />
-  </head>
-  <body>
-    <h1>Resume Profile</h1>
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Auto Fill</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="section">
+    <h2>📝 Resume Auto Fill v1.3.0</h2>
     
-    <!-- Personal Details -->
-    <h2>Personal Details</h2>
     <div class="field-group">
-      <label>Full Name</label>
-      <input id="fullName" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Email</label>
-      <input id="email" type="email" />
-    </div>
-    <div class="field-group">
-      <label>Phone</label>
-      <input id="phone" type="text" />
-    </div>
-    <div class="field-group">
-      <label>City</label>
-      <input id="city" type="text" />
-    </div>
-    <div class="field-group">
-      <label>State</label>
-      <input id="state" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Country</label>
-      <input id="country" type="text" />
-    </div>
-    <div class="field-group">
-      <label>ZIP/PIN Code</label>
-      <input id="zipCode" type="text" />
-    </div>
-    <div class="field-group">
-      <label>LinkedIn URL</label>
-      <input id="linkedin" type="text" />
-    </div>
-    <div class="field-group">
-      <label>GitHub URL</label>
-      <input id="github" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Portfolio/Website</label>
-      <input id="portfolio" type="text" />
+      <label for="fullName">Full Name *</label>
+      <input type="text" id="fullName" placeholder="John Doe">
     </div>
     
-    <!-- Professional Summary -->
-    <h2>Professional Summary</h2>
     <div class="field-group">
-      <label>Summary (3-4 lines)</label>
-      <textarea id="summary" rows="4"></textarea>
+      <label for="email">Email *</label>
+      <input type="email" id="email" placeholder="john@example.com">
     </div>
     
-    <!-- Work Experience -->
-    <h2>Current Work Experience</h2>
     <div class="field-group">
-      <label>Current Job Title/Designation</label>
-      <input id="designation" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Current Company</label>
-      <input id="currentCompany" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Total Experience (e.g., 10 years 6 months)</label>
-      <input id="experience" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Relevant Experience</label>
-      <input id="relevantExperience" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Key Responsibilities</label>
-      <textarea id="responsibilities" rows="4"></textarea>
-    </div>
-    <div class="field-group">
-      <label>Key Achievements</label>
-      <textarea id="achievements" rows="4"></textarea>
+      <label for="phone">Phone *</label>
+      <input type="tel" id="phone" placeholder="+1234567890">
     </div>
     
-    <!-- Education -->
-    <h2>Education</h2>
     <div class="field-group">
-      <label>Highest Degree</label>
-      <input id="degree" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Specialization</label>
-      <input id="specialization" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Institution</label>
-      <input id="institution" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Graduation Year</label>
-      <input id="graduationYear" type="text" />
+      <label for="designation">Current Title</label>
+      <input type="text" id="designation" placeholder="Software Engineer">
     </div>
     
-    <!-- Skills -->
-    <h2>Skills & Expertise</h2>
     <div class="field-group">
-      <label>Skills (comma-separated)</label>
-      <textarea id="skills" rows="3"></textarea>
-    </div>
-    <div class="field-group">
-      <label>Tools/Technologies</label>
-      <textarea id="tools" rows="3"></textarea>
-    </div>
-    <div class="field-group">
-      <label>Certifications</label>
-      <textarea id="certifications" rows="2"></textarea>
-    </div>
-    <div class="field-group">
-      <label>Languages</label>
-      <input id="languages" type="text" />
+      <label for="experience">Years of Experience</label>
+      <input type="text" id="experience" placeholder="5">
     </div>
     
-    <!-- Job Application Specific -->
-    <h2>Job Application Details</h2>
     <div class="field-group">
-      <label>Current CTC</label>
-      <input id="currentCTC" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Expected CTC</label>
-      <input id="expectedCTC" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Notice Period (in days)</label>
-      <input id="noticePeriod" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Preferred Locations</label>
-      <input id="preferredLocations" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Work Authorization</label>
-      <input id="workAuthorization" type="text" />
-    </div>
-    <div class="field-group">
-      <label>Willing to Relocate</label>
-      <select id="willingToRelocate">
-        <option value="">Select...</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-    </div>
-    <div class="field-group">
-      <label>Willing to Travel (%)</label>
-      <input id="willingToTravel" type="text" />
+      <label for="skills">Skills</label>
+      <textarea id="skills" placeholder="JavaScript, Python, React..."></textarea>
     </div>
     
-    <!-- Additional Fields -->
-    <h2>Additional Information</h2>
     <div class="field-group">
-      <label>Date of Birth (DD/MM/YYYY)</label>
-      <input id="dateOfBirth" type="text" />
+      <label for="linkedin">LinkedIn URL</label>
+      <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile">
     </div>
+    
     <div class="field-group">
-      <label>Gender</label>
-      <select id="gender">
-        <option value="">Select...</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-        <option value="Prefer not to say">Prefer not to say</option>
-      </select>
+      <label for="github">GitHub URL</label>
+      <input type="url" id="github" placeholder="https://github.com/yourusername">
     </div>
-    <div class="field-group">
-      <label>Nationality</label>
-      <input id="nationality" type="text" />
-    </div>
-
-    <!-- Custom Fields -->
-    <h2>Custom Fields</h2>
+    
+    <div class="divider"></div>
+    
+    <h3 style="font-size: 14px; margin: 0 0 12px 0;">Custom Fields</h3>
     <div id="customFieldsContainer"></div>
+    
     <div class="field-group">
-      <input id="newCustomKey" type="text" placeholder="Field key, e.g. Relevant Projects" />
-      <input id="newCustomValue" type="text" placeholder="Field value" />
-      <button id="addCustom">Add</button>
+      <input type="text" id="newCustomKey" placeholder="Field name (e.g., Current Company)">
     </div>
-
-    <!-- Actions -->
-    <button id="saveProfile">Save Profile</button>
-    <button id="autoFillBtn">Auto Fill This Page</button>
-
-    <script src="popup.js"></script>
-  </body>
+    <div class="field-group">
+      <input type="text" id="newCustomValue" placeholder="Field value">
+    </div>
+    <button id="addCustomFieldBtn" class="btn-secondary btn-small">+ Add Custom Field</button>
+    
+    <div class="button-group">
+      <button id="saveProfileBtn" class="btn-primary">💾 Save</button>
+      <button id="autofillBtn" class="btn-secondary">✨ Fill Form</button>
+    </div>
+    
+    <div class="button-group">
+      <button id="exportBtn" class="btn-secondary btn-small">📤 Export</button>
+      <button id="importBtn" class="btn-secondary btn-small">📥 Import</button>
+      <button id="clearBtn" class="btn-danger btn-small">🗑️ Clear All</button>
+    </div>
+    
+    <div id="statusMessage"></div>
+    <div id="stats" style="font-size: 11px; color: #777; margin-top: 8px;"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
 </html>
