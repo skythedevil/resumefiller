@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Resume Auto Fill</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>Resume Profile</h1>
+
+    <div class="field-group">
+      <label>Full Name</label>
+      <input id="fullName" type="text" />
+    </div>
+
+    <div class="field-group">
+      <label>Email</label>
+      <input id="email" type="email" />
+    </div>
+
+    <div class="field-group">
+      <label>Phone</label>
+      <input id="phone" type="text" />
+    </div>
+
+    <div class="field-group">
+      <label>Designation</label>
+      <input id="designation" type="text" />
+    </div>
+
+    <div class="field-group">
+      <label>Experience</label>
+      <textarea id="experience"></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Skills</label>
+      <textarea id="skills"></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>LinkedIn</label>
+      <input id="linkedin" type="text" />
+    </div>
+
+    <div class="field-group">
+      <label>GitHub</label>
+      <input id="github" type="text" />
+    </div>
+
+    <h2>Custom fields</h2>
+    <div id="customFieldsContainer"></div>
+
+    <div class="add-custom">
+      <input id="newCustomKey" type="text" placeholder="Field key, e.g. currentCTC" />
+      <input id="newCustomValue" type="text" placeholder="Field value" />
+      <button id="addCustomFieldBtn">Add</button>
+    </div>
+
+    <div class="actions">
+      <button id="saveProfileBtn">Save Profile</button>
+      <button id="autofillBtn">Auto Fill This Page</button>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
