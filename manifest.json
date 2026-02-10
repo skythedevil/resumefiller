@@ -1,8 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Resume Auto Fill",
-  "version": "1.1.0",
-  "description": "Automatically fill resume details in job application forms.",
+  "version": "1.1.2",  "description": "Automatically fill resume details in job application forms.",
   "permissions": ["storage", "scripting", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "action": {
