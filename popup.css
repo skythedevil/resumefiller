@@ -1,0 +1,58 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  padding: 10px;
+  width: 350px;
+}
+
+h1 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.field-group {
+  margin-bottom: 6px;
+}
+
+.field-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.field-group input,
+.field-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#customFieldsContainer .custom-field-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.custom-field-row input {
+  flex: 1;
+}
+
+.custom-field-row button {
+  flex: 0 0 auto;
+}
+
+.add-custom {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
