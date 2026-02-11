@@ -1,1 +1,94 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Resume Auto Fill</title><link rel="stylesheet" href="popup.css"/></head><body><div class="container"><h2>📝 Resume Auto Fill v1.4.0</h2><div class="field-group"><label for="firstName">First Name *</label><input type="text" id="firstName" placeholder="John"></div><div class="field-group"><label for="middleName">Middle Name</label><input type="text" id="middleName" placeholder="Robert"></div><div class="field-group"><label for="lastName">Last Name *</label><input type="text" id="lastName" placeholder="Doe"></div><div class="field-group"><label for="fullName">Full Name *</label><input type="text" id="fullName" placeholder="John Doe"></div><div class="field-group"><label for="email">Email *</label><input type="email" id="email" placeholder="john@example.com"></div><div class="field-group"><label for="phone">Phone *</label><input type="tel" id="phone" placeholder="+91 9999999999"></div><div class="field-group"><label for="alternatePhone">Alternate Phone</label><input type="tel" id="alternatePhone" placeholder="+91 8888888888"></div><div class="field-group"><label for="address">Street Address</label><input type="text" id="address" placeholder="123 Main St"></div><div class="field-group"><label for="city">City *</label><input type="text" id="city" placeholder="Gurugram"></div><div class="field-group"><label for="state">State/Province *</label><input type="text" id="state" placeholder="Haryana"></div><div class="field-group"><label for="country">Country *</label><input type="text" id="country" placeholder="India"></div><div class="field-group"><label for="zipCode">ZIP/Postal Code *</label><input type="text" id="zipCode" placeholder="122001"></div><div class="field-group"><label for="linkedin">LinkedIn URL</label><input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile"></div><div class="field-group"><label for="github">GitHub URL</label><input type="url" id="github" placeholder="https://github.com/yourusername"></div><div class="field-group"><label for="portfolio">Portfolio/Website</label><input type="url" id="portfolio" placeholder="https://yourwebsite.com"></div><div class="field-group"><label for="currentCompany">Current Company</label><input type="text" id="currentCompany" placeholder="Mercer Mettl"></div><div class="field-group"><label for="currentTitle">Current Job Title</label><input type="text" id="currentTitle" placeholder="Senior Manager"></div><div class="field-group"><label for="totalExperience">Total Experience (Years)</label><input type="number" id="totalExperience" placeholder="10"></div><div class="field-group"><label for="currentSalary">Current Salary (Annual)</label><input type="text" id="currentSalary" placeholder="2500000"></div><div class="field-group"><label for="expectedSalary">Expected Salary (Annual)</label><input type="text" id="expectedSalary" placeholder="3000000"></div><div class="field-group"><label for="noticePeriod">Notice Period (Days)</label><input type="number" id="noticePeriod" placeholder="60"></div><div class="field-group"><label for="education">Highest Education</label><input type="text" id="education" placeholder="B.Tech Computer Science"></div><div class="field-group"><label for="university">University/College</label><input type="text" id="university" placeholder="XYZ University"></div><div class="field-group"><label for="graduationYear">Graduation Year</label><input type="number" id="graduationYear" placeholder="2015"></div><div class="field-group"><label for="skills">Technical Skills</label><textarea id="skills" rows="3" placeholder="JavaScript, Python, React, Node.js"></textarea></div><div class="field-group"><label for="summary">Professional Summary</label><textarea id="summary" rows="4" placeholder="Experienced professional with 10+ years..."></textarea></div><div class="field-group"><label for="coverLetter">Cover Letter</label><textarea id="coverLetter" rows="4" placeholder="I am writing to express my interest..."></textarea></div><div class="field-group"><label for="referralSource">How did you hear about us?</label><input type="text" id="referralSource" placeholder="LinkedIn, Indeed, etc."></div><div class="field-group"><label for="gender">Gender</label><select id="gender"><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option></select></div><div class="field-group"><label for="nationality">Nationality</label><input type="text" id="nationality" placeholder="Indian"></div><div class="field-group"><label for="workAuthorization">Work Authorization</label><select id="workAuthorization"><option value="">Select</option><option value="Citizen">Citizen</option><option value="Permanent Resident">Permanent Resident</option><option value="Work Visa">Work Visa</option><option value="Student Visa">Student Visa</option><option value="Need Sponsorship">Need Sponsorship</option></select></div><div class="field-group"><label><input type="checkbox" id="remoteWork"> Open to Remote Work</label></div><div class="field-group"><label><input type="checkbox" id="relocation"> Willing to Relocate</label></div><div class="field-group"><label><input type="checkbox" id="veteran"> Veteran Status</label></div><div class="field-group"><label><input type="checkbox" id="disability"> Disability Status (Optional)</label></div><div class="button-group"><button id="fillForm" class="primary-btn">Fill Form</button><button id="exportJSON" class="secondary-btn">Export JSON</button><button id="exportCSV" class="secondary-btn">Export CSV</button></div><div class="button-group"><button id="importData" class="secondary-btn">Import Data</button><button id="clearData" class="danger-btn">Clear All Data</button></div><input type="file" id="fileInput" accept=".json,.csv" style="display:none"/><div class="footer">Made with ❤️ by <a href="https://linkedin.com/in/skythedevil" target="_blank">skythedevil</a></div></div><script src="popup.js"></script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Resume Auto Fill</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Resume Auto Fill</h1>
+      <span class="tag">v2.0.1</span>
+    </header>
+
+    <section class="profile-section">
+      <label for="profileSelect">Profile</label>
+      <div class="profile-row">
+        <select id="profileSelect"></select>
+        <button id="addProfileBtn" title="Add profile">+</button>
+        <button id="deleteProfileBtn" title="Delete profile">🗑</button>
+      </div>
+      <small class="hint">You can create up to 5 profiles (e.g. Frontend, Backend, Manager).</small>
+    </section>
+
+    <section class="fields-section">
+      <h2>Basic Details</h2>
+      <div class="field">
+        <label>Full Name</label>
+        <input id="fullName" type="text" />
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="email" type="email" />
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input id="phone" type="text" />
+      </div>
+      <div class="field">
+        <label>Designation</label>
+        <input id="designation" type="text" />
+      </div>
+      <div class="field">
+        <label>Experience</label>
+        <input id="experience" type="text" />
+      </div>
+      <div class="field">
+        <label>Skills</label>
+        <textarea id="skills" rows="2"></textarea>
+      </div>
+      <div class="field">
+        <label>LinkedIn</label>
+        <input id="linkedin" type="text" />
+      </div>
+      <div class="field">
+        <label>GitHub</label>
+        <input id="github" type="text" />
+      </div>
+    </section>
+
+    <section class="fields-section">
+      <h2>Custom Fields</h2>
+      <div id="customFieldsContainer"></div>
+
+      <div class="custom-add-row">
+        <input id="customKey" type="text" placeholder="Field key (e.g. Current CTC)" />
+        <input id="customValue" type="text" placeholder="Value" />
+        <button id="addCustomFieldBtn">Add</button>
+      </div>
+    </section>
+
+    <section class="shortcut-section">
+      <h2>Shortcut</h2>
+      <div class="shortcut-row">
+        <span class="shortcut-label">Ctrl + Shift +</span>
+        <input id="shortcutKeyInput" maxlength="1" />
+        <button id="saveShortcutBtn">Save</button>
+      </div>
+      <small class="hint">
+        Avoid keys used by Chrome or Windows defaults (T, N, W, Q, Esc, etc.).  
+        To apply it, go to <code>chrome://extensions/shortcuts</code> and set
+        the same key for "Trigger resume autofill".
+      </small>
+    </section>
+
+    <footer class="footer">
+      <button id="saveProfileBtn" class="primary">Save Profile</button>
+      <button id="autoFillBtn" class="secondary">Auto Fill This Page</button>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
