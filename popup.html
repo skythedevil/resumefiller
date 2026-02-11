@@ -58,6 +58,43 @@
       </div>
     </section>
 
+
+        <section class="fields-section">
+      <h2>Add New Field</h2>
+      <div class="custom-add-row">
+        <input id="newFieldLabel" type="text" placeholder="Field label (e.g. Address)" />
+        <button id="addBasicFieldBtn">Add to Form</button>
+      </div>
+      <small class="hint">Dynamically add new fields to this profile</small>
+      <div id="basicFieldsContainer"></div>
+    </section>
+
+    <section class="fields-section">
+      <h2>Upload Documents</h2>
+      <div class="file-upload-section">
+        <div class="file-upload-row">
+          <div class="field">
+            <label>Resume (PDF/Word/TXT)</label>
+            <div class="file-input-wrapper">
+              <input id="resumeFile" type="file" accept=".pdf,.doc,.docx,.txt" />
+              <span id="resumeFileName" class="file-name"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Cover Letter (PDF/Word/TXT)</label>
+            <div class="file-input-wrapper">
+              <input id="coverLetterFile" type="file" accept=".pdf,.doc,.docx,.txt" />
+              <span id="coverLetterFileName" class="file-name"></span>
+            </div>
+          </div>
+        </div>
+        <small class="hint">Upload your documents to store them with this profile</small>
+      </div>
+      
+      <div class="export-row">
+        <button id="exportExcelBtn">Export to Excel</button>
+      </div>
+    </section>
     <section class="fields-section">
       <h2>Custom Fields</h2>
       <div id="customFieldsContainer"></div>
