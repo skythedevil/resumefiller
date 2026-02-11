@@ -1,79 +1,315 @@
 body {
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-  padding: 10px;
-  width: 350px;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  color: #1f2933;
+  min-height: 600px;
 }
 
-h1 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-h2 {
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.field-group {
-  margin-bottom: 6px;
-}
-
-.field-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.field-group input,
-.field-group textarea {
-  width: 100%;
+.container {
+  width: 420px;
+  padding: 16px;
   box-sizing: border-box;
+  max-height: 600px;
+  overflow-y: auto;
 }
 
-#customFieldsContainer .custom-field-row {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 4px;
-}
-
-.custom-field-row input {
-  flex: 1;
-}
-
-.custom-field-row button {
-  flex: 0 0 auto;
-}
-
-.add-custom {
-  display: flex;
-  gap: 4px;
-  margin: 6px 0;
-}
-
-.actions {
-  margin-top: 8px;
+.header {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.footer {
-  text-align: center;
-  padding: 15px 10px;
-  margin-top: 20px;
-  border-top: 1px solid #ddd;
-  font-size: 12px;
-  color: #666;
-  background: #f8f9fa;
+.header h1 {
+  font-size: 18px;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.footer a {
-  color: #007bff;
-  text-decoration: none;
+.tag {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 600;
 }
 
-.footer a:hover {
-  text-decoration: underline;
-  color: #0056b3;
+section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+section h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.field label {
+  font-size: 12px;
+  margin-bottom: 3px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"],
+textarea,
+select {
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 7px 9px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+.profile-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+#profileSelect {
+  flex: 1;
+}
+
+#addProfileBtn,
+#deleteProfileBtn,
+#addCustomFieldBtn,
+#addBasicFieldBtn,
+#saveShortcutBtn {
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  padding: 0 10px;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 32px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#addProfileBtn:hover,
+#deleteProfileBtn:hover,
+#addCustomFieldBtn:hover,
+#addBasicFieldBtn:hover,
+#saveShortcutBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.custom-add-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.custom-field-row,
+.basic-field-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.custom-field-row input,
+.basic-field-row input {
+  flex: 1;
+}
+
+.custom-field-row button,
+.basic-field-row button {
+  border-radius: 6px;
+  border: 1px solid #fee2e2;
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 0 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-field-row button:hover,
+.basic-field-row button:hover {
+  background: #fee2e2;
+  transform: scale(1.05);
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shortcut-label {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+}
+
+#shortcutKeyInput {
+  width: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.hint code {
+  background: #f3f4f6;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+button.secondary {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  border: 2px solid #667eea;
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #667eea;
+  font-weight: 600;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+button.secondary:hover {
+  background: #667eea;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.file-upload-section {
+  margin-top: 8px;
+}
+
+.file-upload-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.file-name {
+  font-size: 11px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.export-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.export-row button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.export-row button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(245, 87, 108, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
