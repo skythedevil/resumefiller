@@ -43,9 +43,11 @@
 
   // Load profile from storage
   async function loadProfile() {
-    return new Promise((resolve) => {
-      chrome.storage.local.get('resumeProfile', (result) => {
-        cachedProfile = result.resumeProfile || null;
+return new Promise((resolve) => {
+      chrome.storage.sync.get(['profiles', 'activeProfileIndex'], (result) => {
+        const profiles = Array.isArray(result.profiles) ? result.profiles : [];
+        const idx = Number.isInteger(result.activeProfileIndex) ? result.activeProfileIndex : 0;
+        cachedProfile = profiles[idx] || null;
         console.log('Resume Auto Fill: Profile loaded', cachedProfile);
         resolve(cachedProfile);
       });
