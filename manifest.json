@@ -1,1 +1,38 @@
-{"manifest_version":3,"name":"Resume Auto Fill","version":"1.4.1","description":"Automatically fill resume details in job application forms with CSV/JSON export, fuzzy matching, and paste enabler.","permissions":["storage","scripting","activeTab"],"host_permissions":["<all_urls>"],"action":{"default_popup":"popup.html","default_title":"Resume Auto Fill"},"background":{"service_worker":"service_worker.js","type":"module"},"content_scripts":[{"matches":["<all_urls>"],"js":["content.js"],"run_at":"document_idle"}],"commands":{"run-autofill":{"suggested_key":{"default":"Ctrl+Shift+R","mac":"Command+Shift+R"},"description":"Auto fill resume info on current page"}}}
+{
+  "manifest_version": 3,
+  "name": "Resume Auto Fill",
+  "description": "Auto-fill resume details in job application forms with multiple profiles and configurable shortcut.",
+  "version": "2.0.1",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "trigger-autofill": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+R"
+      },
+      "description": "Trigger resume autofill on current page"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
